@@ -48,7 +48,7 @@ type LoanApplication struct {
 	LastModifiedDate       string        `json:"lastModifiedDate"`
 }
 
-func GetLoanApplication(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func GetLoanApplication(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	//logger.Debug("Entering GetLoanApplication")
 
 	if len(args) < 1 {
@@ -65,7 +65,7 @@ func GetLoanApplication(stub *shim.ChaincodeStub, args []string) ([]byte, error)
 	return bytes, nil
 }
 
-func CreateLoanApplication(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func CreateLoanApplication(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	//logger.Debug("Entering CreateLoanApplication")
 
 	if len(args) < 2 {
@@ -95,7 +95,7 @@ func CreateLoanApplication(stub *shim.ChaincodeStub, args []string) ([]byte, err
 /**
 Updates the status of the loan application
 **/
-func UpdateLoanApplication(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func UpdateLoanApplication(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	//logger.Debug("Entering UpdateLoanApplication")
 
 	if len(args) < 2 {
@@ -137,18 +137,18 @@ func UpdateLoanApplication(stub *shim.ChaincodeStub, args []string) ([]byte, err
 
 }
 
-func (t *SampleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SampleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	return nil, nil
 }
 
-func (t *SampleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SampleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	if function == "GetLoanApplication" {
 		return GetLoanApplication(stub, args)
 	}
 	return nil, nil
 }
 
-func GetCertAttribute(stub *shim.ChaincodeStub, attributeName string) (string, error) {
+func GetCertAttribute(stub shim.ChaincodeStubInterface, attributeName string) (string, error) {
 	//logger.Debug("Entering GetCertAttribute")
 	attr, err := stub.ReadCertAttribute(attributeName)
 	if err != nil {
@@ -158,7 +158,7 @@ func GetCertAttribute(stub *shim.ChaincodeStub, attributeName string) (string, e
 	return attrString, nil
 }
 
-func (t *SampleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SampleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	if function == "CreateLoanApplication" {
 		username, _ := GetCertAttribute(stub, "username")
 		role, _ := GetCertAttribute(stub, "role")
